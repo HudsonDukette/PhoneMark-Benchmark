@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07090d">
+<meta name="description" content="PhoneMark — browser CPU, GPU and hybrid mobile benchmark.">
+<title>PhoneMark Benchmark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="brand"><i>P</i> PhoneMark</div><button id="leaderboardBtn">Leaderboard</button></header>
+<main>
+<section id="home" class="screen active">
+  <div class="hero"><label>MOBILE PERFORMANCE BENCHMARK <b>v1.0</b></label><h1>How fast is<br><strong>your phone?</strong></h1><p>Push your CPU, GPU and both together. Get one comparable PhoneMark score.</p></div>
+  <div class="device"><span class="device-icon">⌁</span><div><small>DEVICE DETECTED</small><strong id="deviceName">Detecting…</strong><em id="deviceMeta">Reading browser capabilities</em></div><u></u></div>
+  <button class="run" id="startBtn">RUN BENCHMARK <b>→</b></button>
+  <p class="fine">Takes about 45 seconds · Keep this tab open · Best results on a cool device</p>
+  <div class="features"><div><b>CPU</b><span>Multithread compute</span></div><div><b>GPU</b><span>3D rendering</span></div><div><b>HYBRID</b><span>CPU + GPU load</span></div></div>
+</section>
+
+<section id="running" class="screen">
+  <div class="runhead"><label>PHONEMARK v1.0</label><strong id="runPercent">0%</strong></div>
+  <div class="progress"><i id="progressBar"></i></div>
+  <div class="stage"><div class="orb" id="orb"></div><h2 id="testLabel">Preparing benchmark…</h2><p id="testDetail">Do not switch tabs</p></div>
+  <div class="live"><div>CPU<strong id="liveCpu">—</strong></div><div>GPU<strong id="liveGpu">—</strong></div><div>HYBRID<strong id="liveHybrid">—</strong></div></div>
+</section>
+
+<section id="results" class="screen">
+  <div class="runhead"><label>BENCHMARK COMPLETE</label><strong id="savedStatus">Saving…</strong></div>
+  <div class="bigscore"><small>PHONEMARK SCORE</small><strong id="overallScore">0</strong><span id="percentile">Calculating ranking…</span></div>
+  <div class="scores"><article>CPU<strong id="cpuScore">—</strong><small id="cpuMetric">—</small></article><article>GPU<strong id="gpuScore">—</strong><small id="gpuMetric">—</small></article><article>HYBRID<strong id="hybridScore">—</strong><small id="hybridMetric">—</small></article></div>
+  <div class="details" id="details"></div>
+  <button class="run" id="againBtn">RUN AGAIN <b>↻</b></button><button class="secondary" id="shareBtn">SHARE RESULT</button>
+</section>
+
+<section id="leaderboard" class="screen">
+  <div class="runhead"><div><label>PHONEMARK</label><h2>Leaderboard</h2></div><button id="backBtn">Back</button></div>
+  <div id="leaderboardList" class="list">Loading results…</div>
+</section>
+</main>
+<footer>PhoneMark is a browser benchmark. Scores can vary with temperature, battery level, browser and background activity.</footer>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
+</body>
+</html>
