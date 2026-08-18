@@ -1,7 +1,28 @@
+console.log('PhoneMark: App loading...');
+
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://qgcuydtodbcmvqmfiigx.supabase.co";
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY || "sb_publishable_FgYCUlwoR42lHfcQB-HGvQ_4cpC4NmJ";
-const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let db;
 const VERSION = "1.0";
+
+function initApp() {
+  console.log('PhoneMark: Initializing app...');
+  
+  try {
+    if (window.supabase && window.supabase.createClient) {
+      db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      console.log('PhoneMark: Supabase client initialized');
+    } else {
+      console.error('PhoneMark: Supabase not available on window object');
+    }
+  } catch (error) {
+    console.error('PhoneMark: Failed to initialize Supabase:', error);
+  }
+
+  // Rest of app initialization
+  detect();
+}
 
 const $ = id => document.getElementById(id);
 const fmt = n => Math.round(n).toLocaleString();
@@ -279,18 +300,22 @@ function esc(s) {
   }[c]));
 }
 
-$("startBtn").onclick = run;
-$("againBtn").onclick = run;
-$("leaderboardBtn").onclick = leaderboard;
-$("backBtn").onclick = () => show("home");
-$("shareBtn").onclick = async () => {
-  const text = `I scored ${fmt(latest.overall)} on PhoneMark!`;
-  try {
-    await navigator.share({ title: "PhoneMark result", text, url: location.href });
-  } catch {
-    await navigator.clipboard?.writeText(text + " " + location.href);
-    $("savedStatus").textContent = "Copied";
-  }
-};
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('PhoneMark: DOM loaded');
+  
+  $("startBtn").onclick = run;
+  $("againBtn").onclick = run;
+  $("leaderboardBtn").onclick = leaderboard;
+  $("backBtn").onclick = () => show("home");
+  $("shareBtn").onclick = async () => {
+    const text = `I scored ${fmt(latest.overall)} on PhoneMark!`;
+    try {
+      await navigator.share({ title: "PhoneMark result", text, url: location.href });
+    } catch {
+      await navigator.clipboard?.writeText(text + " " + location.href);
+      $("savedStatus").textContent = "Copied";
+    }
+  };
 
-detect();
+  initApp();
+});

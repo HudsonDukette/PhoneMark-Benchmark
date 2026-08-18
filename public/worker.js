@@ -1,0 +1,1 @@
+self.onmessage=async e=>{const {duration}=e.data;const end=performance.now()+duration;let x=1.23456789,ops=0;while(performance.now()<end){for(let i=0;i<12000;i++){x=Math.sin(x)*Math.cos(x)+Math.sqrt(Math.abs(x)+1.000001);x=(x*1.000000119+0.0000007)%1000000;ops+=12}}self.postMessage({ops,x})}
