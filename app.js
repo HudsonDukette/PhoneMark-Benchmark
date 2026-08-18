@@ -1,8 +1,6 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || "https://qgcuydtodbcmvqmfiigx.supabase.co";
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_KEY || "sb_publishable_FgYCUlwoR42lHfcQB-HGvQ_4cpC4NmJ";
-const db = createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const VERSION = "1.0";
 
 const $ = id => document.getElementById(id);
