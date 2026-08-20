@@ -59,7 +59,7 @@ const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({
 const normalizeUsername = value => String(value || "").trim().toLowerCase();
 const validUsername = value => /^[a-z0-9_.-]{3,30}$/.test(value);
 const initialFor = value => (String(value || "P").trim()[0] || "P").toUpperCase();
-const authEmailFor = username => `${normalizeUsername(username)}@accounts.phonemark.local`;
+const authEmailFor = username => `${normalizeUsername(username)}@phonemark.app`;
 
 function show(id, updateHistory = true) {
   document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
