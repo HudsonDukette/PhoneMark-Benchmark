@@ -80,17 +80,17 @@
   <div id="authPanel" class="panel">
     <div class="auth-tabs"><button id="showLoginBtn" class="active" type="button">Sign in</button><button id="showSignupBtn" type="button">Create account</button></div>
     <form id="loginForm" class="form-stack">
-      <label for="loginUsername">Account name</label><input id="loginUsername" name="username" autocomplete="username" required minlength="3" maxlength="30" placeholder="yourname">
+      <label for="loginEmail">Email</label><input id="loginEmail" name="email" type="email" autocomplete="email" required placeholder="your@email.com">
       <label for="loginPassword">Password</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" required minlength="8" placeholder="At least 8 characters">
       <button class="run compact" type="submit">SIGN IN <b>→</b></button>
     </form>
     <form id="signupForm" class="form-stack hidden">
       <label for="signupUsername">Account name</label><input id="signupUsername" name="username" autocomplete="username" required minlength="3" maxlength="30" pattern="[A-Za-z0-9_.-]+" placeholder="yourname">
       <label for="signupPassword">Password</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" required minlength="8" placeholder="At least 8 characters">
-      <label for="signupEmail">Email <span class="optional">optional</span></label><input id="signupEmail" name="email" type="email" autocomplete="email" placeholder="For account contact only">
+      <label for="signupEmail">Email</label><input id="signupEmail" name="email" type="email" autocomplete="email" required placeholder="your@email.com">
       <label for="signupAvatar">Profile picture <span class="optional">optional</span></label><input id="signupAvatar" name="avatar" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
       <button class="run compact" type="submit">CREATE ACCOUNT <b>→</b></button>
-      <p class="form-help">Your account name and password are used to sign in. If you skip a picture, your avatar uses your first initial.</p>
+      <p class="form-help">Your email and password are used to sign in. Your account name is your display name. If you skip a picture, your avatar uses your first initial.</p>
     </form>
   </div>
   <div id="profilePanel" class="hidden">

@@ -59,7 +59,7 @@ const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({
 const normalizeUsername = value => String(value || "").trim().toLowerCase();
 const validUsername = value => /^[a-z0-9_.-]{3,30}$/.test(value);
 const initialFor = value => (String(value || "P").trim()[0] || "P").toUpperCase();
-const authEmailFor = username => `${normalizeUsername(username)}@phonemark.app`;
+const validEmail = value => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 function show(id, updateHistory = true) {
   document.querySelectorAll(".screen").forEach(screen => screen.classList.remove("active"));
@@ -461,13 +461,13 @@ function switchAuthMode(mode) {
 async function signIn(event) {
   event.preventDefault();
   if (!db) return setStatus("accountStatus", "Supabase is not configured.", "error");
-  const username = normalizeUsername($("loginUsername").value);
+  const email = $("loginEmail").value.trim();
   const password = $("loginPassword").value;
-  if (!validUsername(username)) return setStatus("accountStatus", "Use 3–30 letters, numbers, dots, dashes, or underscores.", "error");
+  if (!validEmail(email)) return setStatus("accountStatus", "Enter a valid email address.", "error");
   if (password.length < 8) return setStatus("accountStatus", "Password must be at least 8 characters.", "error");
   setStatus("accountStatus", "Signing in…");
   try {
-    const { data, error } = await db.auth.signInWithPassword({ email: authEmailFor(username), password });
+    const { data, error } = await db.auth.signInWithPassword({ email, password });
     if (error) return setStatus("accountStatus", error.message, "error");
     await applySession(data.session);
     setStatus("accountStatus", "Signed in.", "success");
@@ -481,21 +481,22 @@ async function signUp(event) {
   if (!db) return setStatus("accountStatus", "Supabase is not configured.", "error");
   const username = normalizeUsername($("signupUsername").value);
   const password = $("signupPassword").value;
-  const contactEmail = $("signupEmail").value.trim();
+  const email = $("signupEmail").value.trim();
   const avatarFile = $("signupAvatar").files[0];
   if (!validUsername(username)) return setStatus("accountStatus", "Use 3–30 letters, numbers, dots, dashes, or underscores.", "error");
+  if (!validEmail(email)) return setStatus("accountStatus", "Enter a valid email address.", "error");
   if (password.length < 8) return setStatus("accountStatus", "Password must be at least 8 characters.", "error");
   setStatus("accountStatus", "Creating account…");
   try {
     const { data, error } = await db.auth.signUp({
-      email: authEmailFor(username),
+      email,
       password,
-      options: { data: { username, contact_email: contactEmail || null } }
+      options: { data: { username } }
     });
     if (error) return setStatus("accountStatus", error.message, "error");
     if (!data.session) {
       switchAuthMode("login");
-      return setStatus("accountStatus", "Account created. Disable email confirmation in Supabase Auth for username-only sign in, then sign in here.", "warning");
+      return setStatus("accountStatus", "Account created! Check your email for a confirmation link, then sign in here.", "success");
     }
     await applySession(data.session);
     const avatarSaved = !avatarFile || await uploadAvatarFile(avatarFile, false);
