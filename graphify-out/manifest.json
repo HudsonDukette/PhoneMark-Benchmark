@@ -1,0 +1,42 @@
+{
+  "app.js": {
+    "mtime": 1787016243.2614002,
+    "ast_hash": "3357a363fedccc61ad6ecbeaec034e9d",
+    "semantic_hash": "3357a363fedccc61ad6ecbeaec034e9d"
+  },
+  "package.json": {
+    "mtime": 1787015779.390657,
+    "ast_hash": "967c1fb57662c6014c4b1811dea38f96",
+    "semantic_hash": "967c1fb57662c6014c4b1811dea38f96"
+  },
+  "public/worker.js": {
+    "mtime": 1787015417.4274905,
+    "ast_hash": "6b5953c6a338bf214b104d1a060bd08b",
+    "semantic_hash": "6b5953c6a338bf214b104d1a060bd08b"
+  },
+  "vercel.json": {
+    "mtime": 1787015417.4264863,
+    "ast_hash": "703d35a29897477a87ade918162dd1b8",
+    "semantic_hash": "703d35a29897477a87ade918162dd1b8"
+  },
+  "vite.config.js": {
+    "mtime": 1787015914.97506,
+    "ast_hash": "1e71a1a092a671f78cedf70be34d3d32",
+    "semantic_hash": "1e71a1a092a671f78cedf70be34d3d32"
+  },
+  "worker.js": {
+    "mtime": 1787015417.4274905,
+    "ast_hash": "6b5953c6a338bf214b104d1a060bd08b",
+    "semantic_hash": "6b5953c6a338bf214b104d1a060bd08b"
+  },
+  "README.md": {
+    "mtime": 1787015417.4249783,
+    "ast_hash": "e8718fc237f360231e19afd654af73f3",
+    "semantic_hash": "e8718fc237f360231e19afd654af73f3"
+  },
+  "index.html": {
+    "mtime": 1787016140.8940716,
+    "ast_hash": "683ae4278110d54206d090b284d7fb21",
+    "semantic_hash": "683ae4278110d54206d090b284d7fb21"
+  }
+}
