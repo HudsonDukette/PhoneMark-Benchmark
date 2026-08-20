@@ -1076,13 +1076,13 @@ async function loadScores() {
       if (!legacy.error) {
         data = (legacy.data || []).map(row => ({ ...row, username: "Guest", cpu_model: "Unknown CPU", gpu_model: "Unknown GPU" }));
         error = null;
-        setStatus("scoresStatus", "Showing legacy scores. Run supabase.sql to enable accounts and exact device filters.", "warning");
+        if ((data || []).length) setStatus("scoresStatus", "Showing legacy scores. Run the database migration for accounts, device filters, and averages.", "warning");
       }
     }
     if (!isCurrent()) return;
     if (error) {
       setStatus("scoresStatus", error.message || "Scores could not be loaded.", "error");
-      list.innerHTML = `<p class="empty-state">Could not load scores. Run the Supabase migration and check the public key.</p>`;
+      list.innerHTML = `<p class="empty-state">Could not load scores. Check your connection and try again.</p>`;
       return;
     }
     scoreRows = data || [];
