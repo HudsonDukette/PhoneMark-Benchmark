@@ -972,7 +972,8 @@ async function insertBenchmarkRow(row) {
   if (!db) return { saved: false, error: new Error("Supabase is unavailable") };
   try {
     let { data, error } = await db.from("benchmark_results").insert(row).select("id").maybeSingle();
-    if (error && /column .* does not exist|schema cache/i.test(error.message || "")) {
+    if (error) {
+      console.warn("PhoneMark: Full schema insert failed, trying legacy:", error.message);
       const legacyInsert = await db.from("benchmark_results").insert(legacyRowFrom(row)).select("id").maybeSingle();
       data = legacyInsert.data;
       error = legacyInsert.error;
@@ -1067,22 +1068,30 @@ async function loadScores() {
       .order(metric, { ascending: false })
       .limit(200);
     if (!isCurrent()) return;
-    if (error && /column .* does not exist|schema cache/i.test(error.message || "")) {
+    if (error) {
+      console.warn("PhoneMark: Full schema query failed, trying legacy:", error.message);
       const legacy = await db.from("benchmark_results")
         .select("device_name,cpu_score,gpu_score,hybrid_score,overall_score,created_at")
         .order(metric, { ascending: false })
         .limit(200);
       if (!isCurrent()) return;
-      if (!legacy.error) {
-        data = (legacy.data || []).map(row => ({ ...row, username: "Guest", cpu_model: "Unknown CPU", gpu_model: "Unknown GPU" }));
-        error = null;
-        if ((data || []).length) setStatus("scoresStatus", "Showing legacy scores. Run the database migration for accounts, device filters, and averages.", "warning");
+      if (legacy.error) {
+        console.warn("PhoneMark: Legacy query also failed:", legacy.message);
+        setStatus("scoresStatus", "", "");
+        scoreRows = [];
+        populateScoreFilters([]);
+        renderScores();
+        return;
       }
+      data = (legacy.data || []).map(row => ({ ...row, username: "Guest", cpu_model: "Unknown CPU", gpu_model: "Unknown GPU" }));
+      error = null;
     }
     if (!isCurrent()) return;
     if (error) {
-      setStatus("scoresStatus", error.message || "Scores could not be loaded.", "error");
-      list.innerHTML = `<p class="empty-state">Could not load scores. Check your connection and try again.</p>`;
+      setStatus("scoresStatus", "", "");
+      scoreRows = [];
+      populateScoreFilters([]);
+      renderScores();
       return;
     }
     scoreRows = data || [];
@@ -1114,7 +1123,7 @@ function renderScores() {
     .filter(row => (!cpuFilter || row.cpu_model === cpuFilter) && (!gpuFilter || row.gpu_model === gpuFilter))
     .sort((a, b) => Number(b[metric] || 0) - Number(a[metric] || 0));
   if (!rows.length) {
-    $("scoresList").innerHTML = `<p class="empty-state">No benchmark scores match these filters yet.</p>`;
+    $("scoresList").innerHTML = `<p class="empty-state">No scores yet. Run a benchmark to get started!</p>`;
     return;
   }
   const metricLabel = { overall_score: "Overall", cpu_score: "CPU", gpu_score: "GPU", hybrid_score: "Hybrid" }[metric];
